@@ -1,0 +1,22 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "predeploy": [
+    ],
+    "source": "functions"
+  },
+  "emulators": {
+    "firestore": {
+      "port": "4002"
+    },
+    "functions": {
+      "port": 5001
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}
