@@ -1,9 +1,5 @@
 const functions = require("firebase-functions");
-const admin = require('firebase-admin')
-
-var serviceAccount = require('$YOUR_SERVICE_ACCOUNT_CREDENTIALS');
-admin.initializeApp({credential:admin.credential.cert(serviceAccount), databaseURL: 'https://avantifellows.firebaseio.com'});
-const db = admin.firestore()
+const db = require("./dbClient")
 
 exports.checkForUser = functions.https.onRequest(async (request, response) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -14,6 +10,7 @@ exports.checkForUser = functions.https.onRequest(async (request, response) => {
 
   //firebase query using where needs a string to compare
   const id = JSON.stringify(param["userID"])
+  console.log(db)
   await db.collection('HaryanaStudents').where('Student Registration Number', '==', id).get().then((query)  => {
     if (query.empty){
       response.send(false)
@@ -23,10 +20,4 @@ exports.checkForUser = functions.https.onRequest(async (request, response) => {
     }
   });
 });
-
-  
-
-
-
-
 
