@@ -10,7 +10,6 @@ exports.checkForUser = functions.https.onRequest(async (request, response) => {
 
   //firebase query using where needs a string to compare
   const id = JSON.stringify(param["userID"])
-  console.log(db)
   await db.collection('HaryanaStudents').where('srn_number', '==', id).get().then((query)  => {
     if (query.empty){
       response.send(false)
