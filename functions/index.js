@@ -10,11 +10,11 @@ exports.checkForUser = functions.https.onRequest(async (request, response) => {
   let param = JSON.parse(Object.keys(request.body)[0])
 
   const id = JSON.stringify(param["userID"])
-  const document = JSON.stringify(param["documentName"])
+  const collection = JSON.stringify(param["collectionName"])
   const column = JSON.stringify(param["columnName"])
 
   /** Query all documents matching the id from the requested collection  */
-  await db.collection(JSON.parse(document)).where(JSON.parse(column), '==', id).get().then((query)  => {
+  await db.collection(JSON.parse(collection)).where(JSON.parse(column), '==', id).get().then((query)  => {
     if (query.empty){
       response.send(false)
     }
