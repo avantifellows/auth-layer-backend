@@ -6,39 +6,63 @@ exports.checkForUser = functions.https.onRequest(async (request, response) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
-  /** Parsing the query parameters from the request -> in this case, the userID, documentName, columnName */
-  let param = JSON.parse(Object.keys(request.body)[0])
+  // Parsing the query parameters from the request
+  let params = JSON.parse(Object.keys(request.body)[0])
+  console.log(params)
 
-  const id = JSON.stringify(param["userID"])
-  const collection = JSON.stringify(param["collectionName"])
-  const column = JSON.stringify(param["columnName"])
+  const id = params["userID"]
+  const collection = params["collectionName"]
+  const column = params["columnName"]
 
-  /** Query all documents matching the id from the requested collection  */
-  await db.collection(JSON.parse(collection)).where(JSON.parse(column), '==', id).get().then((query)  => {
-    if (query.empty){
-      response.send(false)
-    }
-    else{
-      response.send(true)
-    }
-  });
+  // Query all documents matching the id from the requested collection
+  result = await db.collection(collection).where(column, '==', id.toString()).get()
+  if (result.empty){
+    response.send(false)
+  }
+  else{
+    response.send(true)
+  }
 });
 
-/** This function retrieves all program details based on the requested program */
-exports.getProgramData = functions.https.onRequest(async (request, response) => {
+/** This function retrieves all group details based on the requested program */
+exports.getGroupData = functions.https.onRequest(async (request, response) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
-  /** Parsing the query parameters from the request -> in this case, the program name */
-  let param = JSON.parse(Object.keys(request.body)[0])
+  //Parsing the query parameters from the request
+  let params = JSON.parse(Object.keys(request.body)[0])
+  console.log(params)
 
-  /** Query the details against a specific program name from the 'Programs' collection */
-  const id = JSON.stringify(param["program"])
-  await db.collection('Programs').doc(JSON.parse(id)).get().then((query)  => {
-    if(query.exists){
-      response.send(query.data())
-    }
-  });
+  // Query the details against a specific group name from the 'Groups' collection
+  const id = params["group"]
+
+  result = await db.collection('Groups').doc(id.toString()).get()
+  if(result.exists){
+    response.send(result.data())
+  }
+
 });
 
+/** This function checks for user in the database */
+exports.stagingCheckForUser = functions.https.onRequest(async (request, response) => {
+  response.header('Access-Control-Allow-Headers', 'Content-Type');
+  response.header('Access-Control-Allow-Origin', '*');
 
+  // Parsing the query parameters from the request
+  let params = JSON.parse(Object.keys(request.body)[0])
+  console.log(params)
+
+  const id = params["userID"]
+  const collection = params["collectionName"]
+  const column = params["columnName"]
+
+  // Query all documents matching the id from the requested collection
+  result = await db.collection(collection).where(column, '==', id.toString()).get()
+  if (result.empty){
+    response.send(false)
+  }
+  else{
+    response.send(true)
+  }
+
+});
