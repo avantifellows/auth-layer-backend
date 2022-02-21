@@ -63,23 +63,23 @@ exports.getGroupData = httpRequestHandler(async (request, response) => {
 
 /** This function checks for user in the database */
 exports.stagingCheckForUser = httpRequestHandler(async (request, response) => {
-    response.header('Access-Control-Allow-Headers', 'Content-Type');
-    response.header('Access-Control-Allow-Origin', '*');
+  response.header('Access-Control-Allow-Headers', 'Content-Type');
+  response.header('Access-Control-Allow-Origin', '*');
 
-    // Parsing the query parameters from the request
-    let params = JSON.parse(Object.keys(request.body)[0])
-    console.log(params)
+  // Parsing the query parameters from the request
+  let params = JSON.parse(Object.keys(request.body)[0])
+  console.log(params)
 
-    const id = params["userID"]
-    const collection = params["collectionName"]
-    const column = params["columnName"]
+  const id = params["userID"]
+  const collection = params["collectionName"]
+  const column = params["columnName"]
 
-    // Query all documents matching the id from the requested collection
-    result = await db.collection(collection).where(column, '==', id.toString()).get()
-    if (result.empty){
-      response.send(false)
-    }
-    else{
-      response.send(true)
-    }
+  // Query all documents matching the id from the requested collection
+  result = await db.collection(collection).where(column, '==', id.toString()).get()
+  if (result.empty){
+    response.send(false)
+  }
+  else{
+    response.send(true)
+  }
 });
