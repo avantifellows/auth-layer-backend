@@ -7,10 +7,17 @@ Sentry.GCPFunction.init({
   tracesSampleRate: 1.0,
 });
 
-const httpRequestHandler = (callback) => functions.https.onRequest(
+const httpRequestHandler = (name, callback) => functions.https.onRequest(
   // wrap the callback function with Sentry's http handler
   // this allows Sentry to capture any errors that occur and report to Sentry dashboard
   Sentry.GCPFunction.wrapHttpFunction(async (request, response) => {
+
+    // set sentry context to send custom attributes to the dashboard
+    Sentry.setContext('Function context', {
+      function: name,
+      operation: 'httpRequestHandler',
+    });
+
     try {
       return await callback(request, response);
     } catch (error) {
@@ -21,7 +28,7 @@ const httpRequestHandler = (callback) => functions.https.onRequest(
 );
 
 /** This function checks for user in the database */
-exports.checkForUser = httpRequestHandler(async (request, response) => {
+exports.checkForUser = httpRequestHandler('checkForUser', async (request, response) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
@@ -44,7 +51,7 @@ exports.checkForUser = httpRequestHandler(async (request, response) => {
 });
 
 /** This function retrieves all group details based on the requested program */
-exports.getGroupData = httpRequestHandler(async (request, response) => {
+exports.getGroupData = httpRequestHandler('getGroupData', async (request, response) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
@@ -62,7 +69,7 @@ exports.getGroupData = httpRequestHandler(async (request, response) => {
 });
 
 /** This function checks for user in the database */
-exports.stagingCheckForUser = httpRequestHandler(async (request, response) => {
+exports.stagingCheckForUser = httpRequestHandler('stagingCheckForUser', async (request, response) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
