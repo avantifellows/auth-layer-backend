@@ -42,7 +42,6 @@ exports.stagingCheckForUser = functions.https.onRequest(async (request, response
   else{
     response.send(true)
   }
-
 });
 
 /** This function retrieves all group details based on the requested program */
@@ -78,5 +77,6 @@ exports.stagingGetGroupData = functions.https.onRequest(async (request, response
   if(result.exists){
     response.send(result.data())
   }
-
 });
+
+
