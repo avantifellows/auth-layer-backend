@@ -6,13 +6,12 @@ exports.checkForUser = functions.https.onRequest(async (request, response) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
-  // Parsing the query parameters from the request
-  let params = JSON.parse(Object.keys(request.body)[0])
-  console.log(params)
+  console.log(request.body)
 
-  const id = params["userID"]
-  const collection = params["collectionName"]
-  const column = params["columnName"]
+  // Parsing the query parameters from the request
+  const id = request.body["userID"]
+  const collection = request.body["collectionName"]
+  const column = request.body["columnName"]
 
   // Query all documents matching the id from the requested collection
   result = await db.collection(collection).where(column, '==', id.toString()).get()
@@ -30,6 +29,7 @@ exports.stagingCheckForUser = functions.https.onRequest(async (request, response
 
   console.log(request.body)
 
+  // Parsing the query parameters from the request
   const id = request.body["userID"]
   const collection = request.body["collectionName"]
   const column = request.body["columnName"]
@@ -50,13 +50,12 @@ exports.getGroupData = functions.https.onRequest(async (request, response) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
+  console.log(request.body)
+
   //Parsing the query parameters from the request
-  let params = JSON.parse(Object.keys(request.body)[0])
-  console.log(params)
+  const id = request.body["group"]
 
   // Query the details against a specific group name from the 'Groups' collection
-  const id = params["group"]
-
   result = await db.collection('Groups').doc(id.toString()).get()
   if(result.exists){
     response.send(result.data())
@@ -69,10 +68,12 @@ exports.stagingGetGroupData = functions.https.onRequest(async (request, response
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
-  // Query the details against a specific group name from the 'Groups' collection
-  const id = request.body["group"]
-  console.log("group:", id)
+  console.log(request.body)
 
+  //Parsing the query parameters from the request
+  const id = request.body["group"]
+
+  // Query the details against a specific group name from the 'Groups' collection
   result = await db.collection('Groups').doc(id.toString()).get()
   if(result.exists){
     response.send(result.data())
