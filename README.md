@@ -13,7 +13,12 @@
     ```sh
     firebase init functions
     ```
-4. Deploy the functions
+4. Add your projects
+    ```sh
+    firebase use --add
+    # this will ask you to select projects from a list of projects you have access to
+    ```
+6. Deploy the functions
     ```sh
     firebase deploy
     ```
@@ -21,10 +26,7 @@
     ```sh
     firebase deploy --only functions:function_name
     ```
-
-
-firebase deploy --only functions:stagingCheckUser
-firebase deploy --only functions:stagingGetGroupData
-
-<!-- to add another project, run the command below -->
-firebase use --add
+7. Deploy a specific function to a specific project
+   ```sh
+   firebase deploy -P project_alias --only functions:function_name
+   ```
