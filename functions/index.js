@@ -27,8 +27,13 @@ const httpRequestHandler = (name, callback) => functions.https.onRequest(
   })
 );
 
+const aFunctionThatThrowsError = async (message) => {
+  throw new Error(message);
+}
+
 /** This function checks for user in the database */
 exports.checkForUser = httpRequestHandler('checkForUser', async (request, response) => {
+  await aFunctionThatThrowsError('error from Check For User');
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
@@ -52,6 +57,7 @@ exports.checkForUser = httpRequestHandler('checkForUser', async (request, respon
 
 /** This function retrieves all group details based on the requested program */
 exports.getGroupData = httpRequestHandler('getGroupData', async (request, response) => {
+  await aFunctionThatThrowsError('error from Get Group Data');
   response.header('Access-Control-Allow-Headers', 'Content-Type');
   response.header('Access-Control-Allow-Origin', '*');
 
