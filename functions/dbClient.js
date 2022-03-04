@@ -1,6 +1,10 @@
-const admin = require('firebase-admin')
+import config from './config';
+const admin = require('firebase-admin');
 
-var serviceAccount = require("$PATH_TO_SERVICE_ACCOUNTS_CREDENTIALS");
+var serviceAccount = config.appEnv === 'production'
+  ? require("./production-service-account-credentials.json")
+  : require("./staging-service-account-credentials.json");
+
 admin.initializeApp({credential:admin.credential.cert(serviceAccount), databaseURL: 'https://avantifellows.firebaseio.com'});
 const db = admin.firestore()
 module.exports = db

@@ -1,11 +1,13 @@
+import config from './config';
+
 const functions = require("firebase-functions");
 const Sentry = require("@sentry/serverless");
 const db = require("./dbClient")
 
 Sentry.GCPFunction.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: config.sentryDsn,
   tracesSampleRate: 1.0,
-  environment: process.env.APP_ENV || 'production',
+  environment: config.appEnv,
 });
 
 const httpRequestHandler = (name, callback) => functions.https.onRequest(
