@@ -1,5 +1,5 @@
-import config from './config';
 const admin = require('firebase-admin');
+const config = require('./config');
 
 var serviceAccount = config.appEnv === 'production'
   ? require("./production-service-account-credentials.json")

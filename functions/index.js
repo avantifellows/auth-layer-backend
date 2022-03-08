@@ -1,8 +1,7 @@
-import config from './config';
-
 const functions = require("firebase-functions");
 const Sentry = require("@sentry/serverless");
 const db = require("./dbClient")
+const config = require('./config');
 
 Sentry.GCPFunction.init({
   dsn: config.sentryDsn,
