@@ -27,6 +27,15 @@
     firebase deploy --only functions:function_name
     ```
 7. Deploy a specific function to a specific project
-   ```sh
+    ```sh
    firebase deploy -P project_alias --only functions:function_name
    ```
+
+### ENV variables
+Configure the following run-time environment varibles from `Google Cloud Console > Functions > Your Function > Edit`.
+
+#### `APP_ENV`
+Defines the environment the application is running in. Possible values are `production` and `staging`.
+
+#### `SENTRY_DSN`
+The Data Source Name for the Sentry service. This is required to connect the cloud functions to report errors to Sentry. This can be found in the Sentry project settings.
