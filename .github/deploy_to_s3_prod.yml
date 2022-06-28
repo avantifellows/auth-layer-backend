@@ -1,0 +1,29 @@
+- name: Deploy to Prod Cloud Function
+
+on:
+  push:
+    branches: ["main"]
+
+  id: deploy-user-function
+  uses: google-github-actions/deploy-cloud-functions@v0.1.0
+  with:
+    name: checkForUser
+    runtime: nodejs10
+    project: ${{ secrets.gcp_project }}
+    credentials: ${{ secrets.gcp_credentials }}
+
+  id: deploy-group-function
+  uses: google-github-actions/deploy-cloud-functions@v0.1.0
+  with:
+    name: getGroupData
+    runtime: nodejs10
+    project: ${{ secrets.gcp_project }}
+    credentials: ${{ secrets.gcp_credentials }}
+
+  id: deploy-session-function
+  uses: google-github-actions/deploy-cloud-functions@v0.1.0
+  with:
+    name: getSessionData
+    runtime: nodejs10
+    project: ${{ secrets.gcp_project }}
+    credentials: ${{ secrets.gcp_credentials }}
