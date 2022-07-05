@@ -47,6 +47,17 @@ build/Release
 # Dependency directories
 node_modules/
 
+# logs
+firestore-debug.log
+ui-debug.log
+
+# firebase configs
+.firebaserc
+
+# service account credentials
+production-service-account-credentials.json
+staging-service-account-credentials.json
+
 # Optional npm cache directory
 .npm
 

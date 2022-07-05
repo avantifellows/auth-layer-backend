@@ -71,43 +71,41 @@ const isSessionActive = (enabled) => {
 };
 
 /** This function retrieves all session details based on the requested session ID */
-exports.getSessionData = functions
-  .region("asia-south1")
-  .https.onRequest(async (request, response) => {
-    response.header("Access-Control-Allow-Headers", "Content-Type");
-    response.header("Access-Control-Allow-Origin", "*");
+exports.getSessionData = async (request, response) => {
+  response.header("Access-Control-Allow-Headers", "Content-Type");
+  response.header("Access-Control-Allow-Origin", "*");
 
-    // Parsing the query parameters from the request
-    const params = JSON.parse(Object.keys(request.body)[0]);
+  // Parsing the query parameters from the request
+  const params = JSON.parse(Object.keys(request.body)[0]);
 
-    const id = params["sessionId"];
+  const id = params["sessionId"];
 
-    // Query the details against a specific session ID from the 'Sessions' collection
-    result = await db
-      .collection("Sessions")
-      .where("id", "==", id.toString())
-      .get();
+  // Query the details against a specific session ID from the 'Sessions' collection
+  result = await db
+    .collection("Sessions")
+    .where("id", "==", id.toString())
+    .get();
 
-    result.forEach((doc) => {
-      const sessionData = doc.data();
-      let processedData = {};
-      if (
-        isSessionActive(sessionData.enabled) &&
-        isStartDateTimeValid(sessionData.startDate, sessionData.startTime) &&
-        isEndDateTimeValid(sessionData.endDate, sessionData.endTime) &&
-        isRepeatScheduleValid(sessionData.repeatSchedule)
-      ) {
-        processedData.sessionActive = true;
-        processedData.group = sessionData.group;
-        processedData.redirectPlatform = sessionData.redirectPlatform;
-        processedData.redirectPlatformParams =
-          sessionData.redirectPlatformParams;
-        processedData.purpose = sessionData.purpose;
-        processedData.purposeParams = sessionData.purposeParams;
-      } else {
-        processedData.sessionActive = false;
-      }
+  result.forEach((doc) => {
+    const sessionData = doc.data();
+    let processedData = {};
+    if (
+      isSessionActive(sessionData.enabled) &&
+      isStartDateTimeValid(sessionData.startDate, sessionData.startTime) &&
+      isEndDateTimeValid(sessionData.endDate, sessionData.endTime) &&
+      isRepeatScheduleValid(sessionData.repeatSchedule)
+    ) {
+      processedData.sessionActive = true;
+      processedData.group = sessionData.group;
+      processedData.redirectPlatform = sessionData.redirectPlatform;
+      processedData.redirectPlatformParams =
+        sessionData.redirectPlatformParams;
+      processedData.purpose = sessionData.purpose;
+      processedData.purposeParams = sessionData.purposeParams;
+    } else {
+      processedData.sessionActive = false;
+    }
 
-      response.send(processedData);
-    });
+    response.send(processedData);
   });
+};
